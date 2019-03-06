@@ -1,31 +1,73 @@
-
-
-# import modules
 import os
 import csv
 
-# read the csv file
-csvpath = os.path.join('Resources', 'budget_data.csv')
-month =[]
-profit_Loss =  []
 
+months=[]
+revenue=[]
+revenue_change=[]
 
-with open(csvpath, newline='') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=',')
+fPath = os.path.join('Resources','budget_data.csv')
+with open(fPath,'r') as csvfile:
+     csvreader = csv.reader(csvfile, delimiter=',')
+     next (csvreader)
 
-    print(csvreader)
-    csv_header = next(csvfile)
-    print(f"Header: {csv_header}")
+     for row in csvreader:
+         months.append(row[0])
+         revenue.append(int(row[1]))
 
-    #count months in csvfile
+#total number of months(I can use len function or set function)
+         T_months=set(months)
+# total net amount of "Profit/Losses" 
+# (i can do sum function or creat for loop)        
+         net=sum(revenue)
+
+# print results for the 1st and 2nd task
+         print ('Financial Analysis')
+         print('________________________________')
+         print('Total Months:'+str(len(T_months)))
+         print('Total net amount: $'+str(net))
+
+# __________________________________________________________________
+  # avg_net_change=
+  # max_net=
+  # min_net=
+
+  # To find these values I have to creat a for loop that will itrate
+  #  the revenue 
     
-    for row in csvreader:
-        month.append(row[0])
-        profit_Loss.append(float(row[1]))
+# average change in "Profit/Losses"(=sum/len)
 
+for i in range(0,len(revenue)-1):
+    revenue_change.append(int(revenue[i+1])-int(revenue[i]))
+    avg_net_change=round(sum(revenue_change)/len(revenue_change),2)
 
-totalmonth = len (month)
-print (totalmonth)
+ # greatest increase in profits (date and amount)(max function)
+    max_net=max(revenue_change)
+        # associate date for the max
+    max1=max(revenue)  
+    max_date=months[revenue.index(max1)]
+# greatest decrease in losses (date and amount) (min function)
+    min_net=min(revenue_change)
+    min1=min(revenue)
+    min_date=months[revenue.index(min1)]
 
-totalrevenue = sum (profit_Loss)   
-print (totalrevenue)
+#printing the results
+    print("Averege revenue change:$"+str(avg_net_change))
+    print('Greatest increase in revenue:'+ max_date+("$")+ str(max_net))
+    print('Greatest decrease in revenue:'+ min_date+("$")+ str(min_net))
+
+# _____________________________________________________________________
+
+# I have to print all results together in a text file
+
+with open("Financial_analysis.txt", "w") as text_file:
+     print('Financial Analysis\n---------------------\nTotal Months:' +" "+
+      str(len(T_months)) +
+      '\nTotal net amount: $'+" "+
+      str(net) +'\nAverage  Change: $'+" "+
+      str(avg_net_change) +'\nGreatest Increase in Profits:' +" "+
+       str(max_date) +" "+ '($' + str(max_net) + ')' +
+        '\nGreatest Decrease in Profits:' +" "+ str(min_date) +" "+
+        '($' + str(min_net) + ')', file = text_file)
+    
+ 
